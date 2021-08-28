@@ -30,7 +30,8 @@ namespace FileServerPlus.Mvc.Internal
                 var cacheEntryOptions = new MemoryCacheEntryOptions();
                 cacheEntryOptions.AddExpirationToken(FileProvider.Watch(resolvedPath));
 
-                var fileInfo = FileServerRegister.Instance.GetFile(resolvedPath);
+                var subPath = resolvedPath.Replace(_requestPath, string.Empty);
+                var fileInfo = FileProvider.GetFileInfo(subPath);
 
                 if (!fileInfo.Exists &&
                     requestPathBase.HasValue &&
@@ -53,15 +54,13 @@ namespace FileServerPlus.Mvc.Internal
 
         private static string GetHashForFile(IFileInfo fileInfo)
         {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                using (var readStream = fileInfo.CreateReadStream())
-                {
-                    var hash = sha256Hash.ComputeHash(readStream);
-                    return WebEncoders.Base64UrlEncode(hash);
-                }
-            }
+            using var sha256Hash = SHA256.Create();
+            using var readStream = fileInfo.CreateReadStream();
+            var hash = sha256Hash.ComputeHash(readStream);
+            return WebEncoders.Base64UrlEncode(hash);
         }
+
+        private readonly string _requestPath;
 
         public IFileProvider FileProvider { get; }
 
@@ -69,8 +68,9 @@ namespace FileServerPlus.Mvc.Internal
 
         private readonly IMemoryCache _cache;
 
-        public FileServerVersionProvider(IFileProvider fileProvider, IMemoryCache cache)
+        public FileServerVersionProvider(string requestPath, IFileProvider fileProvider, IMemoryCache cache)
         {
+            _requestPath = requestPath;
             FileProvider = fileProvider;
             _cache = cache;
         }

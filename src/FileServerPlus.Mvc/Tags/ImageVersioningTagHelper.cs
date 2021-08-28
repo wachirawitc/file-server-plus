@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
+﻿using FileServerPlus.Mvc.Internal;
+using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Text.Encodings.Web;
-using FileServerPlus.Mvc.Internal;
 
 namespace FileServerPlus.Mvc.Tags
 {
@@ -38,12 +38,11 @@ namespace FileServerPlus.Mvc.Tags
             if (AppendVersion)
             {
                 var option = FileServerRegister.Instance.GetOption(Src);
-                var fileInfo = FileServerRegister.Instance.GetFile(Src);
-                if (option != null && fileInfo is { Exists: true })
+                if (option != null)
                 {
                     Src = output.Attributes[SrcAttributeName].Value as string;
 
-                    var fileServerVersionProvider = new FileServerVersionProvider(option.FileProvider, _cache);
+                    var fileServerVersionProvider = new FileServerVersionProvider(option.RequestPath, option.FileProvider, _cache);
                     var path = fileServerVersionProvider.AddFileVersionToPath(ViewContext.HttpContext.Request.PathBase, Src);
 
                     output.Attributes.SetAttribute(SrcAttributeName, path);
