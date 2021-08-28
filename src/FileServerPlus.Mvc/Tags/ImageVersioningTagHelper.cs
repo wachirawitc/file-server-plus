@@ -16,9 +16,6 @@ namespace FileServerPlus.Mvc.Tags
 
         private const string SrcAttributeName = "src";
 
-        [HtmlAttributeName(SrcAttributeName)]
-        public string Src { get; set; }
-
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if (context == null)
@@ -52,6 +49,9 @@ namespace FileServerPlus.Mvc.Tags
 
         [HtmlAttributeName(AppendVersionAttributeName)]
         public bool AppendVersion { get; set; }
+
+        [HtmlAttributeName(SrcAttributeName)]
+        public string Src { get; set; }
 
         private readonly IMemoryCache _cache;
 
