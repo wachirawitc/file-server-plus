@@ -30,6 +30,11 @@ namespace FileServerPlus.Mvc.Internal
             return option;
         }
 
+        public bool IsExistsRequestPath(string requestPath)
+        {
+            return _fileServerOptions.Any(x => x.RequestPath == requestPath);
+        }
+
         private static IEnumerable<string> GetPaths(string absoluteUrl)
         {
             absoluteUrl = absoluteUrl.Replace("~", string.Empty);

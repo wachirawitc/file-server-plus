@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FileServerPlus.Mvc.Internal;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
 using System;
 using System.IO;
-using FileServerPlus.Mvc.Internal;
 
 namespace FileServerPlus.Mvc.Extensions
 {
@@ -28,6 +28,11 @@ namespace FileServerPlus.Mvc.Extensions
             if (string.IsNullOrWhiteSpace(requestPath))
             {
                 throw new ArgumentNullException(nameof(requestPath));
+            }
+
+            if (FileServerRegister.Instance.IsExistsRequestPath(requestPath))
+            {
+                throw new ArgumentException($"Duplicate request path '{requestPath}'");
             }
 
             var fileProvider = new PhysicalFileProvider(physicalDirectory.FullName);
