@@ -1,6 +1,7 @@
 ### File Server extensions of ASP.NET Core
 
-An extensions of file server on ASP.NET core to support file version
+An extensions of file server on ASP.NET core to support file version,
+Because currently ASP.NET core can't add version to file from file server.
  
 #### Get Started
 
