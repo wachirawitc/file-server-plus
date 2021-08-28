@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Text.Encodings.Web;
+using FileServerPlus.Mvc.Internal;
 
 namespace FileServerPlus.Mvc.Tags
 {

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Antiforgery.Internal;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
 using System;
 
-namespace FileServerPlus.Mvc
+namespace FileServerPlus.Mvc.Internal
 {
     public class FileServerVersionProvider : IFileVersionProvider
     {
@@ -52,7 +53,14 @@ namespace FileServerPlus.Mvc
 
         private static string GetHashForFile(IFileInfo fileInfo)
         {
-            return "abc";
+            using (var sha256 = CryptographyAlgorithms.CreateSHA256())
+            {
+                using (var readStream = fileInfo.CreateReadStream())
+                {
+                    var hash = sha256.ComputeHash(readStream);
+                    return WebEncoders.Base64UrlEncode(hash);
+                }
+            }
         }
 
         public IFileProvider FileProvider { get; }

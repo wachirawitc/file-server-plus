@@ -3,7 +3,7 @@ using Microsoft.Extensions.FileProviders;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FileServerPlus.Mvc
+namespace FileServerPlus.Mvc.Internal
 {
     internal sealed class FileServerRegister
     {

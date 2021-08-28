@@ -2,6 +2,7 @@
 using Microsoft.Extensions.FileProviders;
 using System;
 using System.IO;
+using FileServerPlus.Mvc.Internal;
 
 namespace FileServerPlus.Mvc.Extensions
 {
