@@ -10,10 +10,10 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
     ...
 
-    var fileStorage1 = new DirectoryInfo("Storage\\FileStorage1\\");
+    var fileStorage1 = new DirectoryInfo("D:\\Storage\\FileStorage1\\");
     app.UseFileServerPlus(fileStorage1, "/storage1", enableDirectoryBrowsing: true);
 
-    var fileStorage2 = new DirectoryInfo("Storage\\FileStorage2\\");
+    var fileStorage2 = new DirectoryInfo("E:\\Storage\\FileStorage2\\");
     app.UseFileServerPlus(fileStorage2, "/storage2", enableDirectoryBrowsing: true);
 
     ...
