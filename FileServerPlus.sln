@@ -5,11 +5,16 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{617EAC9A-6414-4D0B-9930-D7D97205415F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileServerPlus.Mvc", "src\FileServerPlus.Mvc\FileServerPlus.Mvc.csproj", "{24FDA343-0256-46CB-B885-3DCB05B5BC8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileServerPlus.Mvc", "src\FileServerPlus.Mvc\FileServerPlus.Mvc.csproj", "{24FDA343-0256-46CB-B885-3DCB05B5BC8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A7BF67F5-833F-4CBE-812F-340D1D3870A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "test\Demo\Demo.csproj", "{EBC980A3-531E-4A10-82B1-63DDA061289C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo", "test\Demo\Demo.csproj", "{EBC980A3-531E-4A10-82B1-63DDA061289C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{E64D8BA5-3ADD-4848-9CFF-AA551EB2825A}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
