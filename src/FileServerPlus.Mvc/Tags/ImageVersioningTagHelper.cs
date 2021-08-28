@@ -59,7 +59,7 @@ namespace FileServerPlus.Mvc.Tags
             IUrlHelperFactory urlHelperFactory,
             HtmlEncoder htmlEncoder) : base(urlHelperFactory, htmlEncoder)
         {
-            this._cache = cache;
+            _cache = cache;
         }
     }
 }

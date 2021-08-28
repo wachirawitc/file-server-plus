@@ -25,12 +25,15 @@ namespace FileServerPlus.Mvc.Internal
                 return path;
             }
 
+            path = path.Replace("~", string.Empty);
+
             if (!_cache.TryGetValue(path, out string value))
             {
                 var cacheEntryOptions = new MemoryCacheEntryOptions();
                 cacheEntryOptions.AddExpirationToken(FileProvider.Watch(resolvedPath));
 
-                var subPath = resolvedPath.Replace(_requestPath, string.Empty);
+                var subPath = resolvedPath
+                    .Replace(_requestPath, string.Empty);
                 var fileInfo = FileProvider.GetFileInfo(subPath);
 
                 if (!fileInfo.Exists &&

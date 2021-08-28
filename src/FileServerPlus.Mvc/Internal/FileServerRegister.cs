@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.FileProviders;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,28 +9,6 @@ namespace FileServerPlus.Mvc.Internal
         public void Add(FileServerOptions fileServerOptions)
         {
             _fileServerOptions.Add(fileServerOptions);
-        }
-
-        public IFileInfo GetFile(string absoluteUrl)
-        {
-            if (string.IsNullOrWhiteSpace(absoluteUrl))
-            {
-                return null;
-            }
-
-            var options = GetOption(absoluteUrl);
-            if (options == null)
-            {
-                return null;
-            }
-
-            var paths = GetPaths(absoluteUrl);
-
-            paths = paths.Skip(1).Take(paths.Count - 1).ToList();
-
-            var subPath = string.Join(@"/", paths);
-            var file = options.FileProvider.GetFileInfo(subPath);
-            return file;
         }
 
         public FileServerOptions GetOption(string absoluteUrl)
