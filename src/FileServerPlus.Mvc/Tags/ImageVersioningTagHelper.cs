@@ -13,6 +13,9 @@ namespace FileServerPlus.Mvc.Tags
 
         private const string SrcAttributeName = "src";
 
+        [HtmlAttributeName(SrcAttributeName)]
+        public string Src { get; set; }
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if (context == null)
@@ -24,12 +27,22 @@ namespace FileServerPlus.Mvc.Tags
             {
                 throw new ArgumentNullException(nameof(output));
             }
+
+            if (AppendVersion)
+            {
+                var file = FileServerRegister.Instance.GetFile(Src);
+                if (file is { Exists: true })
+                {
+                    var x = 0;
+                }
+            }
         }
 
         [HtmlAttributeName(AppendVersionAttributeName)]
         public bool AppendVersion { get; set; }
 
-        public ImageVersioningTagHelper(IUrlHelperFactory urlHelperFactory, HtmlEncoder htmlEncoder) : base(urlHelperFactory, htmlEncoder)
+        public ImageVersioningTagHelper(IUrlHelperFactory urlHelperFactory,
+            HtmlEncoder htmlEncoder) : base(urlHelperFactory, htmlEncoder)
         {
         }
     }

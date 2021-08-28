@@ -31,12 +31,14 @@ namespace FileServerPlus.Mvc.Extensions
 
             var fileProvider = new PhysicalFileProvider(physicalDirectory.FullName);
 
-            app.UseFileServer(new FileServerOptions
-            {
-                FileProvider = fileProvider,
-                RequestPath = requestPath,
-                EnableDirectoryBrowsing = enableDirectoryBrowsing
-            });
+            var options = new FileServerOptions();
+            options.FileProvider = fileProvider;
+            options.RequestPath = requestPath;
+            options.EnableDirectoryBrowsing = enableDirectoryBrowsing;
+
+            FileServerRegister.Instance.Add(options);
+
+            app.UseFileServer(options);
         }
     }
 }
