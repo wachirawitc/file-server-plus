@@ -29,11 +29,11 @@ namespace Demo
 
             app.UseStaticFiles();
 
-            var fileStorage1 = new DirectoryInfo("Storage\\FileStorage1\\");
-            app.UseFileServerPlus(fileStorage1, "/storage1", enableDirectoryBrowsing: true);
+            var rootDirectory1 = new DirectoryInfo("Storage\\FileStorage1\\");
+            app.UseFileServerPlus("Server1", rootDirectory1, "/storage1", enableDirectoryBrowsing: true);
 
-            var fileStorage2 = new DirectoryInfo("Storage\\FileStorage2\\");
-            app.UseFileServerPlus(fileStorage2, "/storage2", enableDirectoryBrowsing: true);
+            var rootDirectory2 = new DirectoryInfo("Storage\\FileStorage2\\");
+            app.UseFileServerPlus("Server2", rootDirectory2, "/storage2", enableDirectoryBrowsing: true);
 
             app.UseRouting();
 

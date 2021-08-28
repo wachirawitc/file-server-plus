@@ -1,6 +1,4 @@
-﻿using FileServerPlus.Mvc.Extensions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
@@ -10,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace FileServerPlus.Mvc.Internal
 {
-    public class FileServerVersionProvider : IFileVersionProvider
+    internal class FileServerVersionProvider : IFileVersionProvider
     {
         public string AddFileVersionToPath(PathString requestPathBase, string path)
         {
@@ -27,23 +25,26 @@ namespace FileServerPlus.Mvc.Internal
                 return path;
             }
 
-            path = FileServerRegister.Instance.Apply(path);
+            var fileProvider = _configuration.Options.FileProvider;
+
+            var urlBuilder = new UrlBuilder(path, _configuration);
+            var subPath = urlBuilder.GetSubPath();
+            path = urlBuilder.GetUrl();
 
             if (!_cache.TryGetValue(path, out string value))
             {
                 var cacheEntryOptions = new MemoryCacheEntryOptions();
-                cacheEntryOptions.AddExpirationToken(_fileServerOptions.FileProvider.Watch(resolvedPath));
+                cacheEntryOptions.AddExpirationToken(fileProvider.Watch(resolvedPath));
 
-                var subPath = _fileServerOptions.GetSubPath(resolvedPath);
-                var fileInfo = _fileServerOptions.FileProvider.GetFileInfo(subPath);
+                var fileInfo = fileProvider.GetFileInfo(subPath);
 
                 if (!fileInfo.Exists &&
                     requestPathBase.HasValue &&
                     resolvedPath.StartsWith(requestPathBase.Value, StringComparison.OrdinalIgnoreCase))
                 {
                     var requestPathBaseRelativePath = resolvedPath[requestPathBase.Value.Length..];
-                    cacheEntryOptions.AddExpirationToken(_fileServerOptions.FileProvider.Watch(requestPathBaseRelativePath));
-                    fileInfo = _fileServerOptions.FileProvider.GetFileInfo(requestPathBaseRelativePath);
+                    cacheEntryOptions.AddExpirationToken(fileProvider.Watch(requestPathBaseRelativePath));
+                    fileInfo = fileProvider.GetFileInfo(requestPathBaseRelativePath);
                 }
 
                 value = fileInfo.Exists ? QueryHelpers.AddQueryString(path, VersionKey, GetHashForFile(fileInfo)) : path;
@@ -68,11 +69,11 @@ namespace FileServerPlus.Mvc.Internal
 
         private readonly IMemoryCache _cache;
 
-        private readonly FileServerOptions _fileServerOptions;
+        private readonly FileServerConfiguration _configuration;
 
-        public FileServerVersionProvider(FileServerOptions fileServerOptions, IMemoryCache cache)
+        public FileServerVersionProvider(FileServerConfiguration configuration, IMemoryCache cache)
         {
-            _fileServerOptions = fileServerOptions;
+            _configuration = configuration;
             _cache = cache;
         }
     }

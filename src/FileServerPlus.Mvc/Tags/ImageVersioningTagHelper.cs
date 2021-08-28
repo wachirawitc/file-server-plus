@@ -14,6 +14,8 @@ namespace FileServerPlus.Mvc.Tags
     {
         private const string AppendVersionAttributeName = "asp-file-server-version";
 
+        private const string ServerIdAttributeName = "asp-file-server-id";
+
         private const string SrcAttributeName = "src";
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -34,12 +36,15 @@ namespace FileServerPlus.Mvc.Tags
 
             if (AppendVersion)
             {
-                var option = FileServerRegister.Instance.GetOption(Src);
-                if (option != null)
+                var configuration = string.IsNullOrWhiteSpace(ServerId) ?
+                    FileServerRegister.Instance.GetDefaultServer() :
+                    FileServerRegister.Instance.GetServer(ServerId);
+
+                if (configuration != null)
                 {
                     Src = output.Attributes[SrcAttributeName].Value as string;
 
-                    var fileServerVersionProvider = new FileServerVersionProvider(option, _cache);
+                    var fileServerVersionProvider = new FileServerVersionProvider(configuration, _cache);
                     var path = fileServerVersionProvider.AddFileVersionToPath(ViewContext.HttpContext.Request.PathBase, Src);
 
                     output.Attributes.SetAttribute(SrcAttributeName, path);
@@ -49,6 +54,9 @@ namespace FileServerPlus.Mvc.Tags
 
         [HtmlAttributeName(AppendVersionAttributeName)]
         public bool AppendVersion { get; set; }
+
+        [HtmlAttributeName(ServerIdAttributeName)]
+        public string ServerId { get; set; }
 
         [HtmlAttributeName(SrcAttributeName)]
         public string Src { get; set; }

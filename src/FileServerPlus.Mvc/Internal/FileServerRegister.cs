@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,43 +7,39 @@ namespace FileServerPlus.Mvc.Internal
 {
     internal sealed class FileServerRegister
     {
-        public void Add(FileServerOptions fileServerOptions)
+        public void Add(string serverId, FileServerOptions fileServerOptions)
         {
-            _fileServerOptions.Add(fileServerOptions);
-        }
-
-        public string Apply(string absoluteUrl)
-        {
-            if (string.IsNullOrWhiteSpace(absoluteUrl))
+            _fileServerOptions.Add(new FileServerConfiguration
             {
-                return absoluteUrl;
-            }
-
-            return absoluteUrl.Replace("~", string.Empty);
+                ServerId = serverId,
+                Options = fileServerOptions
+            });
         }
 
-        public FileServerOptions GetOption(string absoluteUrl)
+        public FileServerConfiguration GetDefaultServer()
         {
-            if (string.IsNullOrWhiteSpace(absoluteUrl))
+            return _fileServerOptions.FirstOrDefault();
+        }
+
+        public FileServerConfiguration GetServer(string serverId)
+        {
+            if (string.IsNullOrWhiteSpace(serverId))
             {
                 return null;
             }
 
-            var paths = GetPaths(absoluteUrl);
-            var requestPath = $"/{paths.FirstOrDefault()}";
-            var option = _fileServerOptions.FirstOrDefault(x => x.RequestPath == requestPath);
-            return option;
-        }
-
-        public FileServerOptions GetOptionWithRequestPath(string requestPath)
-        {
-            var option = _fileServerOptions.FirstOrDefault(x => x.RequestPath == requestPath);
-            return option;
+            var configuration = _fileServerOptions.FirstOrDefault(x => string.Equals(x.ServerId, serverId, StringComparison.CurrentCultureIgnoreCase));
+            return configuration;
         }
 
         public bool IsExistsRequestPath(string requestPath)
         {
-            return _fileServerOptions.Any(x => x.RequestPath == requestPath);
+            return _fileServerOptions.Any(x => x.Options.RequestPath == requestPath);
+        }
+
+        public bool IsExistsServerId(string fileServerId)
+        {
+            return _fileServerOptions.Any(x => x.ServerId == fileServerId);
         }
 
         private static IEnumerable<string> GetPaths(string absoluteUrl)
@@ -58,11 +55,11 @@ namespace FileServerPlus.Mvc.Internal
 
         private static FileServerRegister _instance;
 
-        private readonly List<FileServerOptions> _fileServerOptions;
+        private readonly List<FileServerConfiguration> _fileServerOptions;
 
         private FileServerRegister()
         {
-            _fileServerOptions = new List<FileServerOptions>();
+            _fileServerOptions = new List<FileServerConfiguration>();
         }
     }
 }

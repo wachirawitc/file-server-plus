@@ -11,29 +11,43 @@ namespace FileServerPlus.Mvc
     {
         public IFileInfo Get(string src)
         {
-            var option = FileServerRegister.Instance.GetOption(src);
-            if (option == null)
+            return Get(null, src);
+        }
+
+        public IFileInfo Get(string serverId, string src)
+        {
+            var configuration = string.IsNullOrWhiteSpace(serverId) ?
+                FileServerRegister.Instance.GetDefaultServer() :
+                FileServerRegister.Instance.GetServer(serverId);
+
+            if (configuration == null)
             {
                 return null;
             }
 
-            src = FileServerRegister.Instance.Apply(src);
+            var url = new UrlBuilder(src, configuration);
 
-            var subPath = src.Replace(option.RequestPath, string.Empty);
-
-            var fileInfo = option.FileProvider.GetFileInfo(subPath);
-
+            var subPath = url.GetSubPath();
+            var fileInfo = configuration.Options.FileProvider.GetFileInfo(subPath);
             return fileInfo;
         }
 
         public string GetUrl(string src)
         {
-            var options = FileServerRegister.Instance.GetOption(src);
-            if (options != null)
+            return GetUrl(null, src);
+        }
+
+        public string GetUrl(string serverId, string src)
+        {
+            var configuration = string.IsNullOrWhiteSpace(serverId) ?
+                FileServerRegister.Instance.GetDefaultServer() :
+                FileServerRegister.Instance.GetServer(serverId);
+
+            if (configuration != null)
             {
                 var context = _httpContextAccessor.HttpContext;
                 var cache = context.Resolving<IMemoryCache>();
-                var fileVersionProvider = new FileServerVersionProvider(options, cache);
+                var fileVersionProvider = new FileServerVersionProvider(configuration, cache);
 
                 var path = fileVersionProvider.AddFileVersionToPath(context.Request.PathBase, src);
                 return path;

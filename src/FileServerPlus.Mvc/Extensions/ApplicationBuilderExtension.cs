@@ -8,13 +8,18 @@ namespace FileServerPlus.Mvc.Extensions
 {
     public static class ApplicationBuilderExtension
     {
-        public static void UseFileServerPlus(this IApplicationBuilder app, DirectoryInfo physicalDirectory, string requestPath)
+        public static void UseFileServerPlus(this IApplicationBuilder app, string fileServerId, DirectoryInfo physicalDirectory, string requestPath)
         {
-            UseFileServerPlus(app, physicalDirectory, requestPath, false);
+            UseFileServerPlus(app, fileServerId, physicalDirectory, requestPath, false);
         }
 
-        public static void UseFileServerPlus(this IApplicationBuilder app, DirectoryInfo physicalDirectory, string requestPath, bool enableDirectoryBrowsing)
+        public static void UseFileServerPlus(this IApplicationBuilder app, string fileServerId, DirectoryInfo physicalDirectory, string requestPath, bool enableDirectoryBrowsing)
         {
+            if (string.IsNullOrWhiteSpace(fileServerId))
+            {
+                throw new ArgumentNullException(nameof(fileServerId));
+            }
+
             if (physicalDirectory == null)
             {
                 throw new ArgumentNullException(nameof(physicalDirectory));
@@ -30,6 +35,11 @@ namespace FileServerPlus.Mvc.Extensions
                 throw new ArgumentNullException(nameof(requestPath));
             }
 
+            if (FileServerRegister.Instance.IsExistsServerId(fileServerId))
+            {
+                throw new ArgumentException($"Duplicate file server id '{fileServerId}'");
+            }
+
             if (FileServerRegister.Instance.IsExistsRequestPath(requestPath))
             {
                 throw new ArgumentException($"Duplicate request path '{requestPath}'");
@@ -42,7 +52,7 @@ namespace FileServerPlus.Mvc.Extensions
             options.RequestPath = requestPath;
             options.EnableDirectoryBrowsing = enableDirectoryBrowsing;
 
-            FileServerRegister.Instance.Add(options);
+            FileServerRegister.Instance.Add(fileServerId, options);
 
             app.UseFileServer(options);
         }

@@ -8,12 +8,28 @@ namespace FileServerPlus.Mvc.Extensions
     {
         public static string FileServerContent(this IUrlHelper url, string src)
         {
-            var options = FileServerRegister.Instance.GetOption(src);
-            if (options != null)
+            var configuration = FileServerRegister.Instance.GetDefaultServer();
+            if (configuration != null)
             {
                 var context = url.ActionContext.HttpContext;
                 var cache = context.Resolving<IMemoryCache>();
-                var fileVersionProvider = new FileServerVersionProvider(options, cache);
+                var fileVersionProvider = new FileServerVersionProvider(configuration, cache);
+
+                var path = fileVersionProvider.AddFileVersionToPath(context.Request.PathBase, src);
+                return path;
+            }
+
+            return src;
+        }
+
+        public static string FileServerContent(this IUrlHelper url, string serverId, string src)
+        {
+            var configuration = FileServerRegister.Instance.GetServer(serverId);
+            if (configuration != null)
+            {
+                var context = url.ActionContext.HttpContext;
+                var cache = context.Resolving<IMemoryCache>();
+                var fileVersionProvider = new FileServerVersionProvider(configuration, cache);
 
                 var path = fileVersionProvider.AddFileVersionToPath(context.Request.PathBase, src);
                 return path;
