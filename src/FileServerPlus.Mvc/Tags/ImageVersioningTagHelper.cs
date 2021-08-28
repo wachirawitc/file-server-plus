@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Text.Encodings.Web;
 
@@ -28,12 +30,22 @@ namespace FileServerPlus.Mvc.Tags
                 throw new ArgumentNullException(nameof(output));
             }
 
+            output.CopyHtmlAttribute(SrcAttributeName, context);
+
+            ProcessUrlAttribute(SrcAttributeName, output);
+
             if (AppendVersion)
             {
-                var file = FileServerRegister.Instance.GetFile(Src);
-                if (file is { Exists: true })
+                var option = FileServerRegister.Instance.GetOption(Src);
+                var fileInfo = FileServerRegister.Instance.GetFile(Src);
+                if (option != null && fileInfo is { Exists: true })
                 {
-                    var x = 0;
+                    Src = output.Attributes[SrcAttributeName].Value as string;
+
+                    var fileServerVersionProvider = new FileServerVersionProvider(option.FileProvider, _cache);
+                    var path = fileServerVersionProvider.AddFileVersionToPath(ViewContext.HttpContext.Request.PathBase, Src);
+
+                    output.Attributes.SetAttribute(SrcAttributeName, path);
                 }
             }
         }
@@ -41,9 +53,13 @@ namespace FileServerPlus.Mvc.Tags
         [HtmlAttributeName(AppendVersionAttributeName)]
         public bool AppendVersion { get; set; }
 
-        public ImageVersioningTagHelper(IUrlHelperFactory urlHelperFactory,
+        private readonly IMemoryCache _cache;
+
+        public ImageVersioningTagHelper(IMemoryCache cache,
+            IUrlHelperFactory urlHelperFactory,
             HtmlEncoder htmlEncoder) : base(urlHelperFactory, htmlEncoder)
         {
+            this._cache = cache;
         }
     }
 }
