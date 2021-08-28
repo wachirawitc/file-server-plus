@@ -2,7 +2,20 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="text-center">
+            <h1 class="display-4">Demo</h1>
+            <a href="~/storage1/Sample1.txt">Sample1.txt</a>
+            <a href="~/storage2/Sample2.txt">Sample1.txt</a>
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <img class="d-block m-auto" src="~/storage1/cat.jpg" asp-append-version="true" width="200" alt="Sample cat"/>
+        <span class="d-block text-center">When use 'asp-append-version' framework not generate file version on file server storage1</span>
+    </div>
+    <div class="col-md-12 mb-4">
+        <img class="d-block m-auto" src="~/storage1/cat.jpg" asp-append-version="true" width="200" alt="Sample cat" />
+        <span class="d-block text-center">xx</span>
+    </div>
 </div>

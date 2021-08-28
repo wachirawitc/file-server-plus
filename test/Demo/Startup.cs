@@ -1,8 +1,9 @@
+using FileServerPlus.Mvc.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace Demo
 {
@@ -22,20 +23,17 @@ namespace Demo
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-
-                app.UseHsts();
-            }
+            app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+
+            var fileStorage1 = new DirectoryInfo("Storage\\FileStorage1\\");
+            app.UseFileServerPlus(fileStorage1, "/storage1", enableDirectoryBrowsing: true);
+
+            var fileStorage2 = new DirectoryInfo("Storage\\FileStorage2\\");
+            app.UseFileServerPlus(fileStorage2, "/storage2", enableDirectoryBrowsing: true);
 
             app.UseRouting();
 
