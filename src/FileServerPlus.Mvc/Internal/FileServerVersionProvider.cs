@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FileServerPlus.Mvc.Extensions;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
@@ -25,24 +27,23 @@ namespace FileServerPlus.Mvc.Internal
                 return path;
             }
 
-            path = path.Replace("~", string.Empty);
+            path = FileServerRegister.Instance.Apply(path);
 
             if (!_cache.TryGetValue(path, out string value))
             {
                 var cacheEntryOptions = new MemoryCacheEntryOptions();
-                cacheEntryOptions.AddExpirationToken(FileProvider.Watch(resolvedPath));
+                cacheEntryOptions.AddExpirationToken(_fileServerOptions.FileProvider.Watch(resolvedPath));
 
-                var subPath = resolvedPath
-                    .Replace(_requestPath, string.Empty);
-                var fileInfo = FileProvider.GetFileInfo(subPath);
+                var subPath = _fileServerOptions.GetSubPath(resolvedPath);
+                var fileInfo = _fileServerOptions.FileProvider.GetFileInfo(subPath);
 
                 if (!fileInfo.Exists &&
                     requestPathBase.HasValue &&
                     resolvedPath.StartsWith(requestPathBase.Value, StringComparison.OrdinalIgnoreCase))
                 {
                     var requestPathBaseRelativePath = resolvedPath[requestPathBase.Value.Length..];
-                    cacheEntryOptions.AddExpirationToken(FileProvider.Watch(requestPathBaseRelativePath));
-                    fileInfo = FileProvider.GetFileInfo(requestPathBaseRelativePath);
+                    cacheEntryOptions.AddExpirationToken(_fileServerOptions.FileProvider.Watch(requestPathBaseRelativePath));
+                    fileInfo = _fileServerOptions.FileProvider.GetFileInfo(requestPathBaseRelativePath);
                 }
 
                 value = fileInfo.Exists ? QueryHelpers.AddQueryString(path, VersionKey, GetHashForFile(fileInfo)) : path;
@@ -63,18 +64,15 @@ namespace FileServerPlus.Mvc.Internal
             return WebEncoders.Base64UrlEncode(hash);
         }
 
-        private readonly string _requestPath;
-
-        public IFileProvider FileProvider { get; }
-
         private static readonly char[] QueryStringAndFragmentTokens = { '?', '#' };
 
         private readonly IMemoryCache _cache;
 
-        public FileServerVersionProvider(string requestPath, IFileProvider fileProvider, IMemoryCache cache)
+        private readonly FileServerOptions _fileServerOptions;
+
+        public FileServerVersionProvider(FileServerOptions fileServerOptions, IMemoryCache cache)
         {
-            _requestPath = requestPath;
-            FileProvider = fileProvider;
+            _fileServerOptions = fileServerOptions;
             _cache = cache;
         }
     }

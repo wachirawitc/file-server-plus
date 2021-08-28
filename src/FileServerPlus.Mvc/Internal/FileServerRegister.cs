@@ -11,6 +11,16 @@ namespace FileServerPlus.Mvc.Internal
             _fileServerOptions.Add(fileServerOptions);
         }
 
+        public string Apply(string absoluteUrl)
+        {
+            if (string.IsNullOrWhiteSpace(absoluteUrl))
+            {
+                return absoluteUrl;
+            }
+
+            return absoluteUrl.Replace("~", string.Empty);
+        }
+
         public FileServerOptions GetOption(string absoluteUrl)
         {
             if (string.IsNullOrWhiteSpace(absoluteUrl))

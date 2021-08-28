@@ -17,9 +17,9 @@ namespace FileServerPlus.Mvc
                 return null;
             }
 
-            var subPath = src
-                .Replace("~", string.Empty)
-                .Replace(option.RequestPath, string.Empty);
+            src = FileServerRegister.Instance.Apply(src);
+
+            var subPath = src.Replace(option.RequestPath, string.Empty);
 
             var fileInfo = option.FileProvider.GetFileInfo(subPath);
 
@@ -33,7 +33,7 @@ namespace FileServerPlus.Mvc
             {
                 var context = _httpContextAccessor.HttpContext;
                 var cache = context.Resolving<IMemoryCache>();
-                var fileVersionProvider = new FileServerVersionProvider(options.RequestPath, options.FileProvider, cache);
+                var fileVersionProvider = new FileServerVersionProvider(options, cache);
 
                 var path = fileVersionProvider.AddFileVersionToPath(context.Request.PathBase, src);
                 return path;

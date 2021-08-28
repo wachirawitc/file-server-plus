@@ -42,7 +42,7 @@ namespace FileServerPlus.Mvc.Tags
                 {
                     Src = output.Attributes[SrcAttributeName].Value as string;
 
-                    var fileServerVersionProvider = new FileServerVersionProvider(option.RequestPath, option.FileProvider, _cache);
+                    var fileServerVersionProvider = new FileServerVersionProvider(option, _cache);
                     var path = fileServerVersionProvider.AddFileVersionToPath(ViewContext.HttpContext.Request.PathBase, Src);
 
                     output.Attributes.SetAttribute(SrcAttributeName, path);

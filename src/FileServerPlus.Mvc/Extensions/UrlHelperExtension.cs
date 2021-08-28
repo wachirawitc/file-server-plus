@@ -13,7 +13,7 @@ namespace FileServerPlus.Mvc.Extensions
             {
                 var context = url.ActionContext.HttpContext;
                 var cache = context.Resolving<IMemoryCache>();
-                var fileVersionProvider = new FileServerVersionProvider(options.RequestPath, options.FileProvider, cache);
+                var fileVersionProvider = new FileServerVersionProvider(options, cache);
 
                 var path = fileVersionProvider.AddFileVersionToPath(context.Request.PathBase, src);
                 return path;
