@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Antiforgery.Internal;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
 using System;
+using System.Security.Cryptography;
 
 namespace FileServerPlus.Mvc.Internal
 {
@@ -53,11 +53,11 @@ namespace FileServerPlus.Mvc.Internal
 
         private static string GetHashForFile(IFileInfo fileInfo)
         {
-            using (var sha256 = CryptographyAlgorithms.CreateSHA256())
+            using (SHA256 sha256Hash = SHA256.Create())
             {
                 using (var readStream = fileInfo.CreateReadStream())
                 {
-                    var hash = sha256.ComputeHash(readStream);
+                    var hash = sha256Hash.ComputeHash(readStream);
                     return WebEncoders.Base64UrlEncode(hash);
                 }
             }
