@@ -24,12 +24,17 @@ namespace FileServerPlus.Mvc.Internal
             return option;
         }
 
-        private static List<string> GetPaths(string absoluteUrl)
+        public FileServerOptions GetOptionWithRequestPath(string requestPath)
+        {
+            var option = _fileServerOptions.FirstOrDefault(x => x.RequestPath == requestPath);
+            return option;
+        }
+
+        private static IEnumerable<string> GetPaths(string absoluteUrl)
         {
             absoluteUrl = absoluteUrl.Replace("~", string.Empty);
             var paths = absoluteUrl.Split('/')
-                .Where(x => string.IsNullOrWhiteSpace(x) == false)
-                .ToList();
+                .Where(x => string.IsNullOrWhiteSpace(x) == false);
 
             return paths;
         }
