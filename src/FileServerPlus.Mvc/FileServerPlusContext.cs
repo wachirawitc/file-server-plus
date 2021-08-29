@@ -1,13 +1,13 @@
-﻿using FileServerPlus.Mvc.Extensions;
-using FileServerPlus.Mvc.Interface;
+﻿using FileServerPlus.Mvc.Interface;
 using FileServerPlus.Mvc.Internal;
+using FileServerPlus.Mvc.Internal.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
 
 namespace FileServerPlus.Mvc
 {
-    public class FileServerContext : IFileServerContext
+    public class FileServerPlusContext : IFileServerPlusContext
     {
         public IFileInfo Get(string src)
         {
@@ -59,7 +59,7 @@ namespace FileServerPlus.Mvc
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public FileServerContext(IHttpContextAccessor httpContextAccessor)
+        public FileServerPlusContext(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }

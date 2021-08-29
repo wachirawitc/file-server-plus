@@ -2,7 +2,7 @@
 
 namespace FileServerPlus.Mvc.Interface
 {
-    public interface IFileServerContext
+    public interface IFileServerPlusContext
     {
         IFileInfo Get(string src);
 

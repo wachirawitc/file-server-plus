@@ -18,6 +18,8 @@ namespace Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddFileServerPlus();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

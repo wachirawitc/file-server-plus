@@ -1,4 +1,5 @@
 ﻿using FileServerPlus.Mvc.Internal;
+using FileServerPlus.Mvc.Internal.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 

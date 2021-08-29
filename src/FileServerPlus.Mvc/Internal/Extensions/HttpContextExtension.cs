@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace FileServerPlus.Mvc.Extensions
+namespace FileServerPlus.Mvc.Internal.Extensions
 {
     internal static class HttpContextExtension
     {
