@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FileServerPlus.Mvc\FileServerPlus.Mvc.csproj" />
+    <PackageReference Include="FileServerPlus.Mvc" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
