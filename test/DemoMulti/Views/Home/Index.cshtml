@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="text-center">
+            <h1 class="display-4">Demo</h1>
+            <a href="~/storage1/Sample1.txt">Sample1.txt</a>
+            <a href="~/storage2/Sample2.txt">Sample1.txt</a>
+        </div>
+    </div>
+    <div class="col-md-12 mb-4">
+        <img class="d-block m-auto" src="~/cat.jpg" asp-file-server-id="server1" asp-file-server-version="true" width="200" alt="Sample cat" />
+        <span class="d-block text-center">When use 'asp-append-version' framework not generate file version on file server storage1</span>
+    </div>
+    <div class="col-md-12 mb-4">
+        <img class="d-block m-auto" src="~/dog.jpg" asp-file-server-id="server2" asp-file-server-version="true" width="200" alt="Sample cat" />
+        <span class="d-block text-center">Append 'asp-file-server-version' to generate file version</span>
+    </div>
+    <div class="col-md-12 mb-4">
+        <img class="d-block m-auto" src="@Url.FileServerContent("/cat.jpg")" width="200" alt="Sample cat" />
+        <span class="d-block text-center">Url.FileServerContent to generate file version</span>
+    </div>
+    <div class="col-md-12 mb-4">
+        <img class="d-block m-auto" src="@Url.FileServerContent("server1","/cat.jpg")" width="200" alt="Sample cat" />
+        <span class="d-block text-center">Url.FileServerContent to generate file version</span>
+    </div>
+</div>

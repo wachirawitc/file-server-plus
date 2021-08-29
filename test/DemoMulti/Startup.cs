@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 
-namespace Demo
+namespace DemoMulti
 {
     public class Startup
     {
@@ -31,6 +31,9 @@ namespace Demo
 
             var rootDirectory1 = new DirectoryInfo("..\\storages\\storage1\\");
             app.UseFileServerPlus("Server1", rootDirectory1, "/storage1", enableDirectoryBrowsing: true);
+
+            var rootDirectory2 = new DirectoryInfo("..\\storages\\storage2\\");
+            app.UseFileServerPlus("Server2", rootDirectory2, "/storage2", enableDirectoryBrowsing: true);
 
             app.UseRouting();
 
