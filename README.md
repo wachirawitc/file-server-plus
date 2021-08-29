@@ -15,7 +15,7 @@ An extensions of file server on ASP.NET core to support file version.
 ## Installation
 
 ```sh
-Install-Package FileServerPlus.Mvc -Version 1.0.0
+Install-Package FileServerPlus.Mvc -Version 1.0.1
 ```
 
 ## Get Started
