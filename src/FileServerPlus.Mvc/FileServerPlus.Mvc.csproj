@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Description>An extensions of file server on ASP.NET core to support file version.</Description>
+    <PackageProjectUrl>https://github.com/wachirawitc/file-server-plus</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/wachirawitc/file-server-plus</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
