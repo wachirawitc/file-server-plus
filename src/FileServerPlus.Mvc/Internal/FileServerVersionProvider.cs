@@ -27,7 +27,7 @@ namespace FileServerPlus.Mvc.Internal
 
             var fileProvider = _configuration.Options.FileProvider;
 
-            var urlBuilder = new UrlBuilder(path, _configuration);
+            var urlBuilder = new UrlBuilder(path, _configuration, _httpContext);
             var subPath = urlBuilder.GetSubPath();
             path = urlBuilder.GetUrl();
 
@@ -67,13 +67,16 @@ namespace FileServerPlus.Mvc.Internal
 
         private static readonly char[] QueryStringAndFragmentTokens = { '?', '#' };
 
+        private readonly HttpContext _httpContext;
+
         private readonly IMemoryCache _cache;
 
         private readonly FileServerConfiguration _configuration;
 
-        public FileServerVersionProvider(FileServerConfiguration configuration, IMemoryCache cache)
+        public FileServerVersionProvider(FileServerConfiguration configuration, HttpContext httpContext, IMemoryCache cache)
         {
             _configuration = configuration;
+            _httpContext = httpContext;
             _cache = cache;
         }
     }

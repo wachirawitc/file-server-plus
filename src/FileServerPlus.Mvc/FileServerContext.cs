@@ -25,7 +25,8 @@ namespace FileServerPlus.Mvc
                 return null;
             }
 
-            var url = new UrlBuilder(src, configuration);
+            var context = _httpContextAccessor.HttpContext;
+            var url = new UrlBuilder(src, configuration, context);
 
             var subPath = url.GetSubPath();
             var fileInfo = configuration.Options.FileProvider.GetFileInfo(subPath);
@@ -47,7 +48,7 @@ namespace FileServerPlus.Mvc
             {
                 var context = _httpContextAccessor.HttpContext;
                 var cache = context.Resolving<IMemoryCache>();
-                var fileVersionProvider = new FileServerVersionProvider(configuration, cache);
+                var fileVersionProvider = new FileServerVersionProvider(configuration, context, cache);
 
                 var path = fileVersionProvider.AddFileVersionToPath(context.Request.PathBase, src);
                 return path;
