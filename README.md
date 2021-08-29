@@ -1,23 +1,22 @@
-### File Server extensions of ASP.NET Core
+## File server extensions of ASP.NET Core
 
 An extensions of file server on ASP.NET core to support file version.
 
-#### Output sample
-
-##### Normal (framework not generate version)
+##### Normal (Framework not generate version if use file server)
 ```html
 <img class="d-block m-auto" src="/storage1/cat.jpg" width="200" alt="Sample cat">
 ```
 
-##### File Server Plus
+##### File server Plus
 ```html
 <img class="d-block m-auto" src="/storage1/cat.jpg?v=vW8o-DqXyVVm8IQWxIOh8eFuv91UvMW9uJ2ei1a2vX8" width="200" alt="Sample cat">
 ```
 
-#### Get Started
+## Get Started
 
-##### Register Tags Helper
-Views/_ViewImports.cshtml
+##### Register
+
+###### 1. Views/_ViewImports.cshtml
 
 ```csharp
 // _ViewImports.cshtml
@@ -26,8 +25,20 @@ Views/_ViewImports.cshtml
 @addTagHelper *, FileServerPlus.Mvc
 ```
 
-##### Add configuration
+###### 2. Configure services 
+```csharp
+// Startup.cs
+public void ConfigureServices(IServiceCollection services)
+{
+    ...
 
+    services.AddFileServerPlus();
+}
+```
+
+###### 3. Configure directory
+
+###### 3.1 Sample 
 ```csharp
 // Startup.cs
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -39,7 +50,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 }
 ```
 
-or from appsettings
+###### 3.2 Use configure from json file 
 
 ```json
 // appsettings.json
@@ -66,35 +77,25 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 }
 ```
 
-##### Tag Helper 
+## Options
+###### 1. Tag Helper 
 - asp-file-server-version
 
 ```html
 <img class="d-block m-auto" src="~/cat.jpg" asp-file-server-version="true" width="200" alt="Sample cat" />
 ```
 
-##### IUrlHelper
+###### 2. IUrlHelper
 - Url.FileServerContent("PATH")
 
 ```html
 <img class="d-block m-auto" src="@Url.FileServerContent("~/cat.jpg")" width="200" alt="Sample cat" /> 
 ``` 
 
-- - - -
-#### File server context
 
-
-```csharp
-// Startup.cs
-public void ConfigureServices(IServiceCollection services)
-{
-    ...
-
-    services.AddFileServerPlus();
-}
-```
-
-##### Sample
+###### 3. File server context
+- Get
+- GetUrl
 
 ```csharp
     // HomeController.cs
@@ -119,8 +120,7 @@ public void ConfigureServices(IServiceCollection services)
     }
 ```
 
-- - - -
-#### Multi File Server
+## Multi File server
 
 ```json
 // appsettings.json
@@ -142,7 +142,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-##### Tag Helper 
+###### Selecte sever
 - asp-file-server-id
 
 ```html
