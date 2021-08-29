@@ -81,6 +81,45 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 ``` 
 
 - - - -
+#### File server context
+
+
+```csharp
+// Startup.cs
+public void ConfigureServices(IServiceCollection services)
+{
+    ...
+
+    services.AddFileServerPlus();
+}
+```
+
+##### Sample
+
+```csharp
+    // HomeController.cs
+    public class HomeController : Controller
+    {
+        public IActionResult Index()
+        {
+            var fileInfo1 = _fileServerPlusContext.Get(@"/cat.jpg");
+            var fileInfo2 = _fileServerPlusContext.Get(@"~/cat.jpg");
+
+            var fileUrl = _fileServerPlusContext.GetUrl(@"/cat.jpg");
+            
+            return View();
+        }
+
+        private readonly IFileServerPlusContext _fileServerPlusContext;
+
+        public HomeController(IFileServerPlusContext fileServerPlusContext)
+        {
+            _fileServerPlusContext = fileServerPlusContext;
+        }
+    }
+```
+
+- - - -
 #### Multi File Server
 
 ```json

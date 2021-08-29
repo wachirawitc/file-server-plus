@@ -9,6 +9,9 @@ namespace Demo.Controllers
         {
             var fileInfo1 = _fileServerPlusContext.Get(@"/cat.jpg");
             var fileInfo2 = _fileServerPlusContext.Get(@"~/cat.jpg");
+
+            var fileUrl = _fileServerPlusContext.GetUrl(@"/cat.jpg");
+
             return View();
         }
 
