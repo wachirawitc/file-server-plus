@@ -1,13 +1,13 @@
-﻿using FileServerPlus.Mvc.Internal;
+﻿using System;
+using System.Text.Encodings.Web;
+using FileServerPlus.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Text.Encodings.Web;
 
-namespace FileServerPlus.Mvc.Tags
+namespace FileServerPlus.Mvc.TagHelpers
 {
     [HtmlTargetElement("img", Attributes = AppendVersionAttributeName + "," + SrcAttributeName, TagStructure = TagStructure.WithoutEndTag)]
     public class ImageVersioningTagHelper : UrlResolutionTagHelper
