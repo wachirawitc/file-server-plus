@@ -12,6 +12,12 @@ An extensions of file server on ASP.NET core to support file version.
 <img class="d-block m-auto" src="/storage1/cat.jpg?v=vW8o-DqXyVVm8IQWxIOh8eFuv91UvMW9uJ2ei1a2vX8" width="200" alt="Sample cat">
 ```
 
+## Installation
+
+```sh
+Install-Package FileServerPlus.Mvc -Version 1.0.0
+```
+
 ## Get Started
 
 ##### Register
