@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace FileServerPlus.Mvc.Interface
 {
@@ -11,5 +12,9 @@ namespace FileServerPlus.Mvc.Interface
         string GetUrl(string src);
 
         string GetUrl(string serverId, string src);
+
+        DirectoryInfo GetWorkingDirectory();
+
+        DirectoryInfo GetWorkingDirectory(string serverId);
     }
 }

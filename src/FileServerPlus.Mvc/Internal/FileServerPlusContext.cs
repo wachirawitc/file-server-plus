@@ -1,13 +1,13 @@
 ﻿using FileServerPlus.Mvc.Interface;
-using FileServerPlus.Mvc.Internal;
 using FileServerPlus.Mvc.Internal.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.FileProviders;
+using System.IO;
 
-namespace FileServerPlus.Mvc
+namespace FileServerPlus.Mvc.Internal
 {
-    public class FileServerPlusContext : IFileServerPlusContext
+    internal class FileServerPlusContext : IFileServerPlusContext
     {
         public IFileInfo Get(string src)
         {
@@ -55,6 +55,25 @@ namespace FileServerPlus.Mvc
             }
 
             return null;
+        }
+
+        public DirectoryInfo GetWorkingDirectory()
+        {
+            return GetWorkingDirectory(null);
+        }
+
+        public DirectoryInfo GetWorkingDirectory(string serverId)
+        {
+            var configuration = string.IsNullOrWhiteSpace(serverId) ?
+                FileServerRegister.Instance.GetDefaultServer() :
+                FileServerRegister.Instance.GetServer(serverId);
+
+            if (configuration?.Options?.FileProvider is not PhysicalFileProvider fileProvider)
+            {
+                return null;
+            }
+
+            return new DirectoryInfo(fileProvider.Root);
         }
 
         private readonly IHttpContextAccessor _httpContextAccessor;

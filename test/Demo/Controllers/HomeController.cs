@@ -12,6 +12,8 @@ namespace Demo.Controllers
 
             var fileUrl = _fileServerPlusContext.GetUrl(@"/cat.jpg");
 
+            var directory = _fileServerPlusContext.GetWorkingDirectory();
+
             return View();
         }
 
