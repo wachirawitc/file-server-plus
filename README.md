@@ -102,6 +102,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 ###### 3. File server context
 - Get
 - GetUrl
+- GetWorkingDirectory
 
 ```csharp
     // HomeController.cs
@@ -110,10 +111,13 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         public IActionResult Index()
         {
             var fileInfo1 = _fileServerPlusContext.Get(@"/cat.jpg");
+            
             var fileInfo2 = _fileServerPlusContext.Get(@"~/cat.jpg");
 
             var fileUrl = _fileServerPlusContext.GetUrl(@"/cat.jpg");
             
+            var directory = _fileServerPlusContext.GetWorkingDirectory();
+
             return View();
         }
 
