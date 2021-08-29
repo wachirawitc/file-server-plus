@@ -1,7 +1,18 @@
 ### File Server extensions of ASP.NET Core
 
-An extensions of file server on ASP.NET core to support file version,
-Because currently ASP.NET core can't add version to file from file server.
+An extensions of file server on ASP.NET core to support file version.
+
+#### Output sample
+
+##### Normal (framework not generate version)
+```html
+<img class="d-block m-auto" src="/storage1/cat.jpg" width="200" alt="Sample cat">
+```
+
+##### File Server Plus
+```html
+<img class="d-block m-auto" src="/storage1/cat.jpg?v=vW8o-DqXyVVm8IQWxIOh8eFuv91UvMW9uJ2ei1a2vX8" width="200" alt="Sample cat">
+```
 
 #### Get Started
 
