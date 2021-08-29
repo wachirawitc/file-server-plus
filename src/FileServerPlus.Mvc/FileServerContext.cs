@@ -54,7 +54,7 @@ namespace FileServerPlus.Mvc
                 return path;
             }
 
-            return src;
+            return null;
         }
 
         private readonly IHttpContextAccessor _httpContextAccessor;
