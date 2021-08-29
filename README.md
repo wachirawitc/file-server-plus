@@ -55,16 +55,50 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 }
 ```
 
-#### Tag Helper 
+##### Tag Helper 
 - asp-file-server-version
 
 ```html
 <img class="d-block m-auto" src="~/cat.jpg" asp-file-server-version="true" width="200" alt="Sample cat" />
 ```
 
-#### IUrlHelper
+##### IUrlHelper
 - Url.FileServerContent("PATH")
 
 ```html
-<img class="d-block m-auto" src="@Url.FileServerContent("~/cat.jpg")" width="200" alt="Sample cat" />
+<img class="d-block m-auto" src="@Url.FileServerContent("~/cat.jpg")" width="200" alt="Sample cat" /> 
+``` 
+
+- - - -
+#### Multi File Server
+
+```json
+// appsettings.json
+{
+  "FileServers": [
+    {
+      "ServerId": "Server1",
+      "RootDirectory": "..\\storages\\storage1\\",
+      "RequestPath": "/storage1",
+      "EnableDirectoryBrowsing": false
+    },
+    {
+      "ServerId": "Server2",
+      "RootDirectory": "..\\storages\\storage2\\",
+      "RequestPath": "/storage2",
+      "EnableDirectoryBrowsing": false
+    }
+  ]
+}
+```
+
+##### Tag Helper 
+- asp-file-server-id
+
+```html
+<img class="d-block m-auto" src="~/cat.jpg" asp-file-server-id="Server1" asp-file-server-version="true" width="200" alt="Sample cat" />
+```
+
+```html
+<img class="d-block m-auto" src="@Url.FileServerContent("Server1","~/cat.jpg")" width="200" alt="Sample cat" />
 ```
