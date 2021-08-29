@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.IO;
 
 namespace Demo
 {
@@ -29,8 +28,8 @@ namespace Demo
 
             app.UseStaticFiles();
 
-            var rootDirectory1 = new DirectoryInfo("..\\storages\\storage1\\");
-            app.UseFileServerPlus("Server1", rootDirectory1, "/storage1", enableDirectoryBrowsing: true);
+            var configurationSection = Configuration.GetSection("FileServers");
+            app.UseFileServerPlus(configurationSection);
 
             app.UseRouting();
 

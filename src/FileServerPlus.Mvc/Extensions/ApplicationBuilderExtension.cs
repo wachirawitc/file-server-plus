@@ -1,8 +1,11 @@
 ﻿using FileServerPlus.Mvc.Internal;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace FileServerPlus.Mvc.Extensions
 {
@@ -11,6 +14,21 @@ namespace FileServerPlus.Mvc.Extensions
         public static void UseFileServerPlus(this IApplicationBuilder app, string fileServerId, DirectoryInfo physicalDirectory, string requestPath)
         {
             UseFileServerPlus(app, fileServerId, physicalDirectory, requestPath, false);
+        }
+
+        public static void UseFileServerPlus(this IApplicationBuilder app, IConfigurationSection configuration)
+        {
+            var configurationSections = configuration.Get<List<Internal.ConfigurationSection>>();
+            if (configurationSections.Any() == false)
+            {
+                throw new ArgumentException("Not found configuration");
+            }
+
+            foreach (var section in configurationSections)
+            {
+                var physicalDirectory = new DirectoryInfo(section.RootDirectory);
+                UseFileServerPlus(app, section.ServerId, physicalDirectory, section.RequestPath, section.EnableDirectoryBrowsing);
+            }
         }
 
         public static void UseFileServerPlus(this IApplicationBuilder app, string fileServerId, DirectoryInfo physicalDirectory, string requestPath, bool enableDirectoryBrowsing)
